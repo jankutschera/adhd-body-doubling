@@ -1,8 +1,17 @@
 ---
 name: adhd-body-doubling
-description: Punk-style ADHD body doubling for founders. Free starter system from ADHD-founder.com - German Engineering for the ADHD Brain.
-homepage: https://adhd-founder.com
-metadata: {"clawdbot":{"emoji":"🐱⚡","tags":["adhd","productivity","accountability","founders"],"requires":{},"optional":{}}}
+description: Punk-style ADHD body doubling for founders. Focus sessions, dopamine menu, emergency reset protocol. Use when user says "body double", "focus session", "I'm stuck", "can't start", or mentions ADHD productivity.
+version: 1.0.0
+triggers:
+  - body double
+  - body doubling
+  - focus session
+  - adhd focus
+  - I'm stuck
+  - can't start
+  - dopamine menu
+  - emergency reset
+metadata: {"clawdbot":{"emoji":"🐱⚡","tags":["adhd","productivity","accountability","founders"],"homepage":"https://adhd-founder.com"}}
 ---
 
 # ADHD Body Doubling Skill 🐱⚡
