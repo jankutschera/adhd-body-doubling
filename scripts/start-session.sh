@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 # ADHD Body Doubling v2.0 - Session Starter
 # Part of ADHD-founder.com ecosystem
 
@@ -40,7 +41,7 @@ if [ -z "$1" ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
 fi
 
 # Generate session ID
-SESSION_ID=$(date +%Y%m%d_%H%M%S)_$(openssl rand -hex 4)
+SESSION_ID=$(date +%Y%m%d_%H%M%S)_$(openssl rand -hex 4 2>/dev/null || printf '%04x%04x' $RANDOM $RANDOM)
 SESSION_FILE="$SESSION_DIR/${SESSION_ID}.json"
 
 # Get timestamp
@@ -82,7 +83,9 @@ case $1 in
     echo "Multiple pomodoros with check-ins every 20-25 min."
     ;;
   roi)
-    echo "💰 ROI TRACKER (Basic)"
+    DURATION=25
+    echo "💰 ROI TRACKER (25 min + revenue tracking)"
+    echo "First Micro-Step Protocol enabled."
     echo "Track time vs. revenue for this session."
     ;;
   *)
@@ -96,6 +99,11 @@ echo "════════════════════════�
 echo "  FIRST MICRO-STEP PROTOCOL 🎯"
 echo "═══════════════════════════════════════════════════════"
 echo ""
+
+# Helper: escape strings for JSON
+json_escape() {
+  printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g; s/	/\\t/g'
+}
 
 # Step 1: What are you working on?
 echo "1️⃣  What are you working on?"
@@ -152,6 +160,16 @@ echo ""
 echo "I'll wait. Tell me when you're done with this micro-step."
 echo ""
 
+# Escape user input for JSON safety
+TASK_ESC=$(json_escape "$TASK")
+MICROSTEP_ESC=$(json_escape "$FIRST_MICROSTEP")
+SMALLEST_ESC=$(json_escape "$SMALLEST_STEP")
+
+# Validate energy is numeric, default to 5
+if ! [[ "${ENERGY_START:-5}" =~ ^[0-9]+$ ]]; then
+  ENERGY_START=5
+fi
+
 # Save session start data
 cat > "$SESSION_FILE" << EOF
 {
@@ -162,9 +180,9 @@ cat > "$SESSION_FILE" << EOF
   "duration_planned": $DURATION,
   "duration_actual": null,
   "task_category": "$TASK_CATEGORY",
-  "task_description": "$TASK",
-  "first_microstep": "$FIRST_MICROSTEP",
-  "smallest_step": "$SMALLEST_STEP",
+  "task_description": "$TASK_ESC",
+  "first_microstep": "$MICROSTEP_ESC",
+  "smallest_step": "$SMALLEST_ESC",
   "energy_start": ${ENERGY_START:-5},
   "energy_end": null,
   "completion_rate": null,
