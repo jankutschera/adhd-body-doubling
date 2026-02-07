@@ -24,7 +24,7 @@ metadata:
       - "I need a body double"
       - "Help me work on this for 50 minutes"
       - "I'm procrastinating and need accountability"
-    related_skills: ["adhd-daily-planner"]
+    related_skills: ["adhd-founder-planner"]
 ---
 
 # ADHD Body Doubling Skill v2.1 🐱⚡
